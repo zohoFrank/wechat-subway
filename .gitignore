@@ -1,0 +1,4 @@
+# ignored files
+.idea
+*.jpg
+test_*
