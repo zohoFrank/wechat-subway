@@ -2,6 +2,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
+from uuid import uuid4
 
 
 class MailSender(object):
@@ -101,14 +102,21 @@ class MailSender(object):
         self._message['To'] = ','.join(self._to_address)
 
     def _attach_all(self):
+        mimeimages = []
+        html_text = ''
         for path in self._image:
             img = open(path, 'rb')
             msg_img = MIMEImage(img.read())
             img.close()
-            msg_img.add_header('Content-ID', '<' + path + '>')
-            rich_text = MIMEText('<img src="cid:' + path + '">', 'html', 'utf-8')
-            self._message.attach(rich_text)  # KEY HTML text must be attached before image
-            self._message.attach(msg_img)
+            name = str(uuid4())
+            msg_img.add_header('Content-ID', '<' + name + '>')
+            mimeimages.append(msg_img)
+            html_text += '<img src="cid:' + name + '">'
+
+        rich_text = MIMEText(html_text, 'html', 'utf-8')
+        self._message.attach(rich_text)  # KEY HTML text must be attached before image
+        for image in mimeimages:
+            self._message.attach(image)
 
     # necessary methods #
     def set_smtp(self, smtp):
@@ -135,7 +143,7 @@ class MailSender(object):
         """
         self._image.append(path)
 
-    def append_rcver(self, receiver):
+    def add_rcver(self, receiver):
         self._to_address.append(receiver)
 
     def set_debug(self, is_):
