@@ -102,7 +102,7 @@ class MailSender(object):
         self._message['To'] = ','.join(self._to_address)
 
     def _attach_all(self):
-        mimeimages = []
+        mime_images = []
         html_text = ''
         for path in self._image:
             img = open(path, 'rb')
@@ -110,12 +110,12 @@ class MailSender(object):
             img.close()
             name = str(uuid4())
             msg_img.add_header('Content-ID', '<' + name + '>')
-            mimeimages.append(msg_img)
+            mime_images.append(msg_img)
             html_text += '<img src="cid:' + name + '">'
 
         rich_text = MIMEText(html_text, 'html', 'utf-8')
         self._message.attach(rich_text)  # KEY HTML text must be attached before image
-        for image in mimeimages:
+        for image in mime_images:
             self._message.attach(image)
 
     # necessary methods #
@@ -149,26 +149,3 @@ class MailSender(object):
     def set_debug(self, is_):
         self._debug = is_
 
-
-if __name__ == '__main__':
-    import re
-
-    ms = MailSender()
-    ms.sender = str(raw_input("Send from: "))
-    # handling receivers
-    input_rcv = str(raw_input("To (separated by ','): "))
-    rcv_list = re.findall(r'([^,]+)\.', input_rcv)
-    ms.receivers = rcv_list
-
-    ms.password = str(raw_input("Password: "))
-
-    # todo Set a dictionary of ordinary smtp servers
-    ms.set_smtp('smtp.163.com:25')
-
-    ms.subject = str(raw_input("Subject: "))
-
-    # todo Handling image attachment
-    ms.attach_img('../Picture1.jpg')
-
-    ms.set_debug(True)
-    ms.send_mails()

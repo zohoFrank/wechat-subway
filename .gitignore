@@ -1,4 +1,5 @@
 # ignored files
 .idea
 *.jpg
+*.pyc
 test_*
