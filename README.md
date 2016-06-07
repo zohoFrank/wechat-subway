@@ -1,2 +1,2 @@
 # wechat-subway
-Auto-reply on route of Beijing Subway.
+Auto-reply helper of personal wechat account.
