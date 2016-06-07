@@ -2,6 +2,7 @@ from mail_pic import MailSender
 import os
 import itchat
 import threading
+import time
 from PIL import Image
 
 TEST_MAILBOX = 'zohotestcode@163.com'
@@ -19,10 +20,11 @@ def search_qr():
             img = Image.open(PIC_NAME)
             if img is not None:
                 print '\n>> Found QR\n>> Sending mails\n'
+                time.sleep(1.5)
                 send_mail()
                 return
-        except Exception as err:
-            print err
+        except:
+            continue
 
 
 def delete_exist():
@@ -37,7 +39,7 @@ def send_mail():
     ms.subject = CONTENT
     ms.smtp = SMTP_SERVER
     ms.attach_img(PIC_NAME)
-    ms.set_debug(True)
+    # ms.set_debug(True)
     ms.send_mails()
     print ">> Mail sent!"
 
@@ -66,5 +68,3 @@ def mail_login():
     thread2 = MailLogin(itchat.auto_login)
     thread1.start()
     thread2.start()
-
-mail_login()
