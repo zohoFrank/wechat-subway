@@ -1,31 +1,31 @@
-
 class PackageManager(object):
 
     def __init__(self):
-        self._installed = []
-        self._active = []
-        self._available = []
+        self.enabled_plugins = {
+            'system': [],
+            'text': [],
+            'map': [],
+            'card': [],
+            'note': [],
+            'sharing': [],
+            'picture': [],
+            'recording': [],
+            'attachment': [],
+            'video': [],
+            'friends': [],
+            'useless': []
+        }
 
-    @property
-    def installed(self):
-        return self._installed
+    def list(self, ptype=None):
+        if ptype is not None:
+            return {ptype: self.enabled_plugins[ptype]}
+        return self.enabled_plugins
 
-    @property
-    def active(self):
-        return self._active
-
-    @property
-    def available(self):
-        return self.available
-
-    def install_plugin(self, plugin):
+    def install(self, plugin):
         pass
 
-    def disable_plugin(self, plugin):
+    def uninstall(self, plugin):
         pass
 
-    def enable_plugin(self, plugin):
-        pass
-
-    def scan_available_plugins(self, plugin):
+    def register_all(self):
         pass
