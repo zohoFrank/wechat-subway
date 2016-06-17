@@ -5,15 +5,15 @@ Input to active manage-mode:
 Local: 'manage -l ' + account_name
 Foreign: 'manage -f ' + account_name + ' ' + key
 
-To inactive:
-'manage -d' then 'y'
+To exit manage-mode:
+'manage -d'
 """
 from plugin import Plugin
 
 
 class ManagerController(Plugin):
     def __init__(self, key, account_name):
-        super(ManagerController, self).__init__()
+        super(ManagerController, self).__init__(name='manager-controller', properties=['system'])
         self.__key = key
         self.__name = account_name
         self.__msg = ''
