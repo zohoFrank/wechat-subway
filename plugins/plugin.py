@@ -4,8 +4,17 @@ Superclass of all plugins.
 
 
 class Plugin(object):
-    def __init__(self):
-        pass
+    def __init__(self, name, properties):
+        self.__name = name
+        self.__properties = properties
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def properties(self):
+        return self.__properties
 
     def filter(self, msg):
         """
